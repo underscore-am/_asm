@@ -1,16 +1,22 @@
 ---
 import { Editor } from "../sections/Editor";
+import { Ram } from "../sections/Ram";
+import { Regs } from "../sections/Regs";
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<Editor client:load />
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro</title>
+  </head>
+  <body>
+    <div class="flex h-[100vh] w-full overflow-hidden">
+      <Editor client:load />
+      <Ram />
+      <Regs />
+    </div>
+  </body>
 </html>
