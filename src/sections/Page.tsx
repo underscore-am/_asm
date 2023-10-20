@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import { Editor } from "./Editor";
 import { Ram } from "./Ram";
 import { Regs } from "./Regs";
@@ -6,7 +6,7 @@ import type { editor } from "monaco-editor";
 import type { VM } from "underscore-asm";
 import type { InstructionResult } from "underscore-asm/src/common";
 
-const RAM_SECTION_BLOCKS = Math.pow(2, 8);
+export const RAM_SECTION_BLOCKS = Math.pow(2, 8);
 
 export function Page() {
   const [editor, setEditor] = createSignal<editor.IStandaloneCodeEditor | null>(
@@ -32,6 +32,21 @@ export function Page() {
     setRegisters(Array.from(vm.registers));
     setInstructionResult(result);
   }
+
+  createEffect(() => {
+    let address = ramPointer();
+    if (address === undefined) {
+      return;
+    }
+    const start = address * RAM_SECTION_BLOCKS;
+    const ramSection = vm()?.memory.slice(start, start + RAM_SECTION_BLOCKS);
+
+    if (!ramSection) {
+      return;
+    }
+
+    setRam(Array.from(ramSection));
+  });
 
   return (
     <div class="flex h-[100vh] w-full overflow-hidden gap-[6px] bg-black">

@@ -2,6 +2,7 @@ import { Minus, Plus } from "lucide-solid";
 import { For, type Accessor, Index } from "solid-js";
 import type { InstructionResult } from "underscore-asm/src/common";
 import { compile } from "underscore-asm/src/compile";
+import { RAM_SECTION_BLOCKS } from "./Page";
 
 interface RamProps {
   section: Accessor<number[] | undefined>;
@@ -11,7 +12,7 @@ interface RamProps {
 }
 
 export function Ram(props: RamProps) {
-  const { section, pointer, result } = props;
+  const { section, pointer, result, setRamPointer } = props;
 
   console.log(section);
   const decimal = () => decimalToBinary(pointer() ?? 0, 8);
@@ -23,13 +24,35 @@ export function Ram(props: RamProps) {
       </header>
 
       <div class="w-full flex gap-[12px] items-center justify-center px-[18px] top-[94px] absolute">
-        <button class="w-[64px] h-[46px] bg-[#fff] rounded-[8px] flex items-center justify-center">
+        <button
+          class="w-[64px] h-[46px] bg-[#fff] rounded-[8px] flex items-center justify-center"
+          onClick={() =>
+            setRamPointer((old) => {
+              old--;
+              if (old < 0) {
+                old = RAM_SECTION_BLOCKS - 1;
+              }
+              return old;
+            })
+          }
+        >
           <Minus />
         </button>
-        <div class="flex-1 bg-[#fff] w-full h-[46px] rounded-[8px] flex items-center justify-center">
+        <div class="flex-1 bg-[#fff] w-full h-[46px] rounded-[8px] flex items-center justify-center font-mono">
           <span class="text-[#131921] text-[24px] font-[900]">{decimal()}</span>
         </div>
-        <button class="w-[64px] h-[46px] bg-[#fff] rounded-[8px] flex items-center justify-center">
+        <button
+          class="w-[64px] h-[46px] bg-[#fff] rounded-[8px] flex items-center justify-center"
+          onClick={() =>
+            setRamPointer((old) => {
+              old++;
+              if (old >= RAM_SECTION_BLOCKS) {
+                old = 0;
+              }
+              return old;
+            })
+          }
+        >
           <Plus />
         </button>
       </div>
