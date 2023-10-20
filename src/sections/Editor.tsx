@@ -15,10 +15,11 @@ interface EditorProps {
   setEditor: (value: editor.IStandaloneCodeEditor | null) => void;
   vm: Accessor<VM | undefined>;
   setVm: (value: VM) => void;
+  refreshAddresses: (vm: VM, result?: InstructionResult) => void;
 }
 
 export function Editor(props: EditorProps) {
-  const { editor, setEditor, vm, setVm } = props;
+  const { editor, setEditor, vm, setVm, refreshAddresses } = props;
 
   onMount(() => {
     loadMonaco(monacoContainer, `move r0 1 \nadd r0 1010`).then(setEditor);
@@ -43,7 +44,7 @@ export function Editor(props: EditorProps) {
 
               const vm = init(result.data);
               setVm(vm);
-              console.log(vm);
+              refreshAddresses(vm);
             }}
           >
             <CompileButton />

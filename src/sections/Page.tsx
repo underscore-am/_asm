@@ -38,7 +38,13 @@ export function Page() {
 
   return (
     <div class="flex h-[100vh] w-full overflow-hidden gap-[6px] bg-black">
-      <Editor vm={vm} setVm={setVm} editor={editor} setEditor={setEditor} />
+      <Editor
+        vm={vm}
+        setVm={setVm}
+        editor={editor}
+        setEditor={setEditor}
+        refreshAddresses={refreshAddresses}
+      />
       <Ram section={ram} />
       <Regs />
     </div>
