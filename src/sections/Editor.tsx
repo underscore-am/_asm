@@ -6,39 +6,22 @@ import { init } from "underscore-asm/src/compile";
 import { iserr, isok } from "variants-ts";
 import type { InstructionResult } from "underscore-asm/src/common";
 import { CompileButton, RunButton } from "./Icons";
+import { type Accessor } from "solid-js";
 
-const RAM_SECTION_BLOCKS = Math.pow(2, 8);
 let monacoContainer: HTMLDivElement;
-export function Editor() {
-  const [editor, setEditor] = createSignal<editor.IStandaloneCodeEditor | null>(
-    null
-  );
-  const [compiled, setCompiled] = createSignal<VM>();
 
-  const [ram, setRam] = createSignal<Uint16Array>();
-  const [registers, setRegisters] = createSignal<Uint16Array>();
-  const [ramPointer, setRamPointer] = createSignal<number>();
-  const [instructionResult, setInstructionResult] = createSignal<InstructionResult>();
+interface EditorProps {
+  editor: Accessor<editor.IStandaloneCodeEditor | null>;
+  setEditor: (value: editor.IStandaloneCodeEditor | null) => void;
+  vm: Accessor<VM | undefined>;
+  setVm: (value: VM) => void;
+}
 
-  function refreshAddresses(vm: VM, result?: InstructionResult) {
-  	let address = ramPointer();
-  	if (address === undefined) {
-		setRamPointer(0);
-		address = 0;
-	}
-
-	const ramSection = vm.memory.slice(address, address + RAM_SECTION_BLOCKS);
-	setRam(ramSection);
-	setRegisters(vm.registers);
-
-	if (result) {
-		setInstructionResult(result);
-	}
-  }
+export function Editor(props: EditorProps) {
+  const { editor, setEditor, vm, setVm } = props;
 
   onMount(() => {
     loadMonaco(monacoContainer, `move r0 1 \nadd r0 1010`).then(setEditor);
-    setEditor(editor);
   });
 
   return (
@@ -59,7 +42,7 @@ export function Editor() {
               }
 
               const vm = init(result.data);
-              setCompiled(vm);
+              setVm(vm);
               console.log(vm);
             }}
           >
@@ -67,7 +50,7 @@ export function Editor() {
           </button>
           <button
             onClick={() => {
-              const code = compiled();
+              const code = vm();
               console.log(code);
               if (!code) {
                 return;

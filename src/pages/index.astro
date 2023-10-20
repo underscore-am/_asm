@@ -1,7 +1,5 @@
 ---
-import { Editor } from "../sections/Editor";
-import { Ram } from "../sections/Ram";
-import { Regs } from "../sections/Regs";
+import { Page } from "../sections/Page";
 ---
 
 <html lang="en">
@@ -13,10 +11,6 @@ import { Regs } from "../sections/Regs";
     <title>Astro</title>
   </head>
   <body>
-    <div class="flex h-[100vh] w-full overflow-hidden">
-      <Editor client:load />
-      <Ram />
-      <Regs />
-    </div>
+      <Page client:load />
   </body>
 </html>
