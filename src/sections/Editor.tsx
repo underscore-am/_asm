@@ -5,6 +5,7 @@ import asm, { type Compiled, type VM } from "underscore-asm";
 import { init } from "underscore-asm/src/compile";
 import { iserr, isok } from "variants-ts";
 import type { InstructionResult } from "underscore-asm/src/common";
+import { CompileButton, RunButton } from "./Icons";
 
 const RAM_SECTION_BLOCKS = Math.pow(2, 8);
 let monacoContainer: HTMLDivElement;
@@ -41,41 +42,46 @@ export function Editor() {
   });
 
   return (
-    <div class="w-full">
-      <div ref={monacoContainer} class="h-[500px] w-full" />
-      <button
-        onClick={() => {
-          const value = editor()?.getValue();
-          if (!value) {
-            return;
-          }
-          const result = asm.compile(value);
-          if (iserr(result)) {
-            console.log(result.data);
-            return;
-          }
+    <div class="w-full h-screen overflow-hidden relative flex flex-col">
+      <header class="bg-[#121212] w-full h-[64px] flex items-center justify-between px-[50px]">
+        <span class="text-[#3B82F6] text-[32px] font-[700]">Editor</span>
+        <div class="flex items-center gap-2">
+          <button
+            onClick={() => {
+              const value = editor()?.getValue();
+              if (!value) {
+                return;
+              }
+              const result = asm.compile(value);
+              if (iserr(result)) {
+                console.log(result.data);
+                return;
+              }
 
-          const vm = init(result.data);
-          setCompiled(vm);
-          console.log(vm);
-        }}
-      >
-        Compile
-      </button>
-      <button
-        onClick={() => {
-          const code = compiled();
-          console.log(code);
-          if (!code) {
-            return;
-          }
+              const vm = init(result.data);
+              setCompiled(vm);
+              console.log(vm);
+            }}
+          >
+            <CompileButton />
+          </button>
+          <button
+            onClick={() => {
+              const code = compiled();
+              console.log(code);
+              if (!code) {
+                return;
+              }
 
-          const result = asm.run(code);
-          console.log(result);
-        }}
-      >
-        Run
-      </button>
+              const result = asm.run(code);
+              console.log(result);
+            }}
+          >
+            <RunButton />
+          </button>
+        </div>
+      </header>
+      <div ref={monacoContainer} class="flex-1 w-full overflow-hidden" />
     </div>
   );
 }
