@@ -1,6 +1,6 @@
 import { createSignal, onMount } from "solid-js";
 import { loadMonaco } from "../utils/editor";
-import type { editor } from "monaco-editor";
+import { type editor as editorNs } from "monaco-editor";
 import asm, { type Compiled, type VM } from "underscore-asm";
 import { init } from "underscore-asm/src/compile";
 import { iserr, isok } from "variants-ts";
@@ -11,18 +11,23 @@ import { type Accessor } from "solid-js";
 let monacoContainer: HTMLDivElement;
 
 interface EditorProps {
-  editor: Accessor<editor.IStandaloneCodeEditor | null>;
-  setEditor: (value: editor.IStandaloneCodeEditor | null) => void;
+  editor: Accessor<editorNs.IStandaloneCodeEditor | null>;
+  setEditor: (value: editorNs.IStandaloneCodeEditor | null) => void;
   vm: Accessor<VM | undefined>;
   setVm: (value: VM) => void;
   refreshAddresses: (vm: VM, result?: InstructionResult) => void;
 }
-
 export function Editor(props: EditorProps) {
   const { editor, setEditor, vm, setVm, refreshAddresses } = props;
 
+  const [e, setE] = createSignal<typeof editorNs>();
+
   onMount(() => {
-    loadMonaco(monacoContainer, `move r0 1 \nadd r0 1010`).then(setEditor);
+    loadMonaco(monacoContainer, `move r0 1 \nadd r0 1010`).then((result) => {
+      setEditor(result.myEditor);
+      result.editor;
+      setE(result.editor);
+    });
   });
 
   return (
@@ -32,15 +37,36 @@ export function Editor(props: EditorProps) {
         <div class="flex items-center gap-2">
           <button
             onClick={() => {
-              const value = editor()?.getValue();
-              if (!value) {
+              const E = editor();
+              if (!E) {
                 return;
               }
+              const value = E.getValue();
+
               const result = asm.compile(value);
               if (iserr(result)) {
                 console.log(result.data);
+                const model = E.getModel();
+
+                e()?.setModelMarkers(
+                  model!,
+                  "myOwner",
+                  result.data.map((error) => {
+                    return {
+                      startLineNumber: error.line + 1, // line number where the error starts
+                      endLineNumber: error.line + 1, // line number where the error ends
+                      startColumn: 1, // start column of the error
+                      endColumn: 1000, // end column of the error
+                      message: error.message,
+                      severity: 8, // Severity level
+                    };
+                  })
+                );
                 return;
               }
+
+              const model = E.getModel();
+              e()?.setModelMarkers(model!, "myOwner", []);
 
               const vm = init(result.data);
               setVm(vm);
@@ -58,6 +84,7 @@ export function Editor(props: EditorProps) {
               }
 
               const result = asm.run(code);
+              refreshAddresses(code, result);
               console.log(result);
             }}
           >
@@ -65,7 +92,7 @@ export function Editor(props: EditorProps) {
           </button>
         </div>
       </header>
-      <div ref={monacoContainer} class="flex-1 w-full overflow-hidden" />
+      <div ref={monacoContainer} class="flex-1 w-full" />
     </div>
   );
 }

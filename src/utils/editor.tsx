@@ -63,62 +63,71 @@ const LANGUAGE_ID = "pseudo-assembly";
 const THEME_ID = "pseudo-assembly-theme";
 
 export async function loadMonaco(
-	container: HTMLDivElement,
-	initialCode: string
+  container: HTMLDivElement,
+  initialCode: string
 ) {
-	const monaco = await import("monaco-editor");
+  const monaco = await import("monaco-editor");
 
-	// Define the new language
-	monaco.languages.register({ id: LANGUAGE_ID });
+  // Define the new language
+  monaco.languages.register({ id: LANGUAGE_ID });
 
-	// Register a tokens provider for the language
-	monaco.languages.setMonarchTokensProvider(LANGUAGE_ID, {
-		tokenizer: {
-			root: [
-				[/!\w+/, "string"],
-				[/@\w+/, "type"],
-				[/>\w+/, "function"],
-				[/<\w+/, "operator"],
-				[/\b(add|neg|move|jump|jumpeq|jumpne|jumple|jumplt|jumpge|jumpgt|push|pop|call|ret)\b/, "keyword"],
-				[/(\*\b)?(r[0-7]|ip)\b/, "variable"],
-				[/[01]+/, "number"],
-				[/#[^\n]*/, "comment"],
-			],
-		},
-	});
+  // Register a tokens provider for the language
+  monaco.languages.setMonarchTokensProvider(LANGUAGE_ID, {
+    tokenizer: {
+      root: [
+        [/!\w+/, "string"],
+        [/@\w+/, "type"],
+        [/>\w+/, "function"],
+        [/<\w+/, "operator"],
+        [
+          /\b(add|neg|move|jump|jumpeq|jumpne|jumple|jumplt|jumpge|jumpgt|push|pop|call|ret)\b/,
+          "keyword",
+        ],
+        [/(\*\b)?(r[0-7]|ip)\b/, "variable"],
+        [/[01]+/, "number"],
+        [/#[^\n]*/, "comment"],
+      ],
+    },
+  });
 
-	// Define the language"s configuration
-	monaco.languages.setLanguageConfiguration(LANGUAGE_ID, {
-		comments: {
-			lineComment: "#",
-		},
-	});
+  // Define the language"s configuration
+  monaco.languages.setLanguageConfiguration(LANGUAGE_ID, {
+    comments: {
+      lineComment: "#",
+    },
+  });
 
-	monaco.editor.defineTheme(THEME_ID, {
-		base: "vs-dark",
-		colors: {
-			"editor.background": "#080808",
-		},
-		inherit: true,
-		rules: [
-			{ token: "string", foreground: "ff5454" },
-			{ token: "type", foreground: "8cc85f" },
-			{ token: "function", foreground: "e3c78a" },
-			{ token: "operator", foreground: "80a0ff" },
-			{ token: "keyword", foreground: "cf87e8" },
-			{ token: "variable", foreground: "ae81ff" },
-			{ token: "number", foreground: "36c692" },
-			{ token: "comment", foreground: "888888", fontStyle: "italic" },
-		],
-	});
+  monaco.editor.defineTheme(THEME_ID, {
+    base: "vs-dark",
+    colors: {
+      "editor.background": "#080808",
+    },
+    inherit: true,
+    rules: [
+      { token: "string", foreground: "ff5454" },
+      { token: "type", foreground: "8cc85f" },
+      { token: "function", foreground: "e3c78a" },
+      { token: "operator", foreground: "80a0ff" },
+      { token: "keyword", foreground: "cf87e8" },
+      { token: "variable", foreground: "ae81ff" },
+      { token: "number", foreground: "36c692" },
+      { token: "comment", foreground: "888888", fontStyle: "italic" },
+    ],
+  });
 
-	monaco.editor.setTheme(THEME_ID);
+  monaco.editor.setTheme(THEME_ID);
 
-	const myEditor = monaco.editor.create(container, {
-		value: initialCode,
-		language: LANGUAGE_ID,
-		fontSize: 20,
-	});
+  const myEditor = monaco.editor.create(container, {
+    value: initialCode,
+    language: LANGUAGE_ID,
+    fontSize: 20,
+    minimap: {
+      enabled: false,
+    },
+  });
 
-	return myEditor;
+  return {
+    myEditor,
+    editor: monaco.editor,
+  };
 }

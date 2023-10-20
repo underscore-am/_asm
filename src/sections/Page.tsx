@@ -30,10 +30,7 @@ export function Page() {
     const ramSection = vm.memory.slice(address, address + RAM_SECTION_BLOCKS);
     setRam(Array.from(ramSection));
     setRegisters(Array.from(vm.registers));
-
-    if (result) {
-      setInstructionResult(result);
-    }
+    setInstructionResult(result);
   }
 
   return (
@@ -45,8 +42,13 @@ export function Page() {
         setEditor={setEditor}
         refreshAddresses={refreshAddresses}
       />
-      <Ram section={ram} />
-      <Regs />
+      <Ram
+        section={ram}
+        pointer={ramPointer}
+        result={instructionResult}
+        setRamPointer={setRamPointer}
+      />
+      <Regs registers={registers} result={instructionResult} />
     </div>
   );
 }
