@@ -117,6 +117,7 @@ export async function loadMonaco(
 	const myEditor = monaco.editor.create(container, {
 		value: initialCode,
 		language: LANGUAGE_ID,
+		fontSize: 20,
 	});
 
 	return myEditor;
