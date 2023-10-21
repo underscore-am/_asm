@@ -28,7 +28,7 @@ export function Regs(props: RegisterProps) {
                 class="bg-[#fff] rounded-[6px] h-[40px] flex  items-center justify-between px-[18px]"
                 classList={{
                   "!bg-[green]": result()?.registerRead === index,
-                  "!bg-[red]": result()?.registerModified === index,
+                  "!bg-red-bright": result()?.registerModified === index,
                 }}
               >
                 <span class="text-[#131921] text-[20px] font-[900] uppercase">

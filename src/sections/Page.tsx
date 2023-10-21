@@ -128,6 +128,7 @@ export function Page() {
         ref={monacoContainer}
       />
       <Ram
+        registers={registers}
         section={ram}
         pointer={ramPointer}
         result={instructionResult}

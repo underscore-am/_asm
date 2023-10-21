@@ -8,10 +8,11 @@ interface RamProps {
   pointer: Accessor<number | undefined>;
   result: Accessor<InstructionResult | undefined>;
   setRamPointer: (changer: (old: number) => number) => void;
+  registers: Accessor<number[] | undefined>;
 }
 
 export function Ram(props: RamProps) {
-  const { section, pointer, result, setRamPointer } = props;
+  const { section, pointer, result, setRamPointer, registers } = props;
 
   console.log(section);
   const decimal = () => decimalToBinary(pointer() ?? 0, 8);
@@ -64,23 +65,48 @@ export function Ram(props: RamProps) {
             const modifiedAddress = () => {
               const register = result()?.registerDereferencedModified;
               if (register === undefined) {
-                return -1;
+                return undefined;
               }
+
+              const registersBuffer = registers();
+
+              if (registersBuffer === undefined) {
+                return undefined;
+              }
+
+              return registersBuffer[register];
             };
+
+            const readAddress = () => {
+              const register = result()?.registerDereferencedRead;
+              if (register === undefined) {
+                return undefined;
+              }
+
+              const registersBuffer = registers();
+
+              if (registersBuffer === undefined) {
+                return undefined;
+              }
+
+              return registersBuffer[register];
+            };
+
             return (
               <div class="w-full h-[40px] flex gap-2 font-mono">
-                <div class="bg-[#2B313A] rounded-[6px] flex items-center justify-between px-[18px]">
+                <div
+                  class="bg-[#2B313A] rounded-[6px] flex items-center justify-between px-[18px]"
+                  classList={{
+                    "!bg-red-bright": modifiedAddress() === index,
+                    "!bg-green-bright": readAddress() === index,
+                  }}
+                >
                   <span class="text-[#fff] text-[24px] font-[500]">
                     {decimalToBinary(index, 8)}
                   </span>
                 </div>
                 <div class="bg-[#BDD6E8] rounded-[6px] flex items-center justify-center px-[18px] flex-1">
-                  <span
-                    class="text-[#000] text-[24px] font-[500]"
-                    classList={{
-                      "!bg-[#red]": modifiedAddress() === index,
-                    }}
-                  >
+                  <span class="text-[#000] text-[24px] font-[500]">
                     {decimalToBinary(value(), 16)}
                   </span>
                 </div>
