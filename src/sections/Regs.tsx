@@ -17,7 +17,7 @@ export function Regs(props: RegisterProps) {
         <span class="text-[#A855F7] text-[32px] font-[700]">Regs</span>
         <_ASM />
       </header>
-      <div class="flex flex-col pt-[64px] gap-[10px]">
+      <div class="flex flex-col pt-[64px] gap-[10px] font-mono">
         <Index each={registers()}>
           {(register, index) => {
             const binary = () => decimalToBinary(register(), 16);
