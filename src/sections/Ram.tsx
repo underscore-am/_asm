@@ -78,7 +78,7 @@ export function Ram(props: RamProps) {
                   <span
                     class="text-[#000] text-[24px] font-[500]"
                     classList={{
-                      "!bg-[red]": modifiedAddress() === index,
+                      "!bg-[#red]": modifiedAddress() === index,
                     }}
                   >
                     {decimalToBinary(value(), 16)}

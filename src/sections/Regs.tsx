@@ -2,6 +2,7 @@ import { type Accessor, Index } from "solid-js";
 import { _ASM } from "./Icons";
 import { decimalToBinary } from "./Ram";
 import type { InstructionResult } from "underscore-asm";
+import { registerBinaryToName } from "underscore-asm/src/common";
 
 interface RegisterProps {
   registers: Accessor<number[] | undefined>;
@@ -24,14 +25,18 @@ export function Regs(props: RegisterProps) {
 
             return (
               <div
-                class="bg-[#fff] rounded-[6px] h-[40px] flex items-center justify-between px-[18px]"
+                class="bg-[#fff] rounded-[6px] h-[40px] flex  items-center justify-between px-[18px]"
                 classList={{
                   "!bg-[green]": result()?.registerRead === index,
                   "!bg-[red]": result()?.registerModified === index,
                 }}
               >
+                <span class="text-[#131921] text-[20px] font-[900] uppercase">
+                  {registerBinaryToName[index]}
+                </span>
+
                 <span class="text-[#131921] text-[20px] font-[900]">
-                  R{index} {binary()}
+                  {binary()}
                 </span>
               </div>
             );
