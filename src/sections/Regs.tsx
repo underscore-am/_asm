@@ -1,7 +1,7 @@
-import { For, type Accessor, Index } from "solid-js";
+import { type Accessor, Index } from "solid-js";
 import { _ASM } from "./Icons";
 import { decimalToBinary } from "./Ram";
-import type { InstructionResult } from "underscore-asm/src/common";
+import type { InstructionResult } from "underscore-asm";
 
 interface RegisterProps {
   registers: Accessor<number[] | undefined>;

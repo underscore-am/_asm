@@ -4,7 +4,7 @@ import { Ram } from "./Ram";
 import { Regs } from "./Regs";
 import type { editor } from "monaco-editor";
 import type { VM } from "underscore-asm";
-import type { InstructionResult } from "underscore-asm/src/common";
+import type { InstructionResult } from "underscore-asm";
 
 export const RAM_SECTION_BLOCKS = Math.pow(2, 8);
 

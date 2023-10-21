@@ -1,26 +1,26 @@
 {
-	"name": "underscore-asm",
-	"type": "module",
-	"version": "0.0.1",
-	"scripts": {
-		"dev": "astro dev",
-		"start": "astro dev",
-		"build": "astro build",
-		"preview": "astro preview",
-		"astro": "astro"
-	},
-	"dependencies": {
-		"@astrojs/solid-js": "^3.0.2",
-		"@astrojs/tailwind": "^5.0.1",
-		"astro": "^3.2.3",
-		"lucide-solid": "^0.288.0",
-		"monaco-editor": "^0.44.0",
-		"solid-js": "^1.4.3",
-		"tailwindcss": "^3.0.24",
-		"underscore-asm": "1.0.1",
-		"variants-ts": "^1.0.1"
-	},
-	"devDependencies": {
-		"@total-typescript/ts-reset": "^0.5.1"
-	}
+  "name": "underscore-asm",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/solid-js": "^3.0.2",
+    "@astrojs/tailwind": "^5.0.1",
+    "astro": "^3.2.3",
+    "lucide-solid": "^0.288.0",
+    "monaco-editor": "^0.44.0",
+    "solid-js": "^1.4.3",
+    "tailwindcss": "^3.0.24",
+    "underscore-asm": "1.0.2",
+    "variants-ts": "^1.0.1"
+  },
+  "devDependencies": {
+    "@total-typescript/ts-reset": "^0.5.1"
+  }
 }

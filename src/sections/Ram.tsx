@@ -1,7 +1,6 @@
 import { Minus, Plus } from "lucide-solid";
-import { For, type Accessor, Index } from "solid-js";
-import type { InstructionResult } from "underscore-asm/src/common";
-import { compile } from "underscore-asm/src/compile";
+import { type Accessor, Index } from "solid-js";
+import type { InstructionResult } from "underscore-asm";
 import { RAM_SECTION_BLOCKS } from "./Page";
 
 interface RamProps {
