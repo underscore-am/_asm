@@ -113,7 +113,7 @@ export function Page() {
 
   return (
     <div
-      class="flex h-[100vh] w-full overflow-hidden gap-[6px] bg-black"
+      class="flex h-[100vh] w-full overflow-hidden gap-[6px] bg-[#000]"
       onKeyDown={(e) => {
         if (e.key === "s" && (e.metaKey || e.ctrlKey)) {
           e.preventDefault();
