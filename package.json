@@ -17,7 +17,7 @@
     "monaco-editor": "^0.44.0",
     "solid-js": "^1.4.3",
     "tailwindcss": "^3.0.24",
-    "underscore-asm": "1.0.3",
+    "underscore-asm": "1.0.4",
     "variants-ts": "^1.0.1"
   },
   "devDependencies": {
