@@ -6,9 +6,10 @@ interface EditorProps {
   ref: HTMLDivElement;
   handleCompile: () => void;
   handleRun: () => void;
+  shouldDisable: Accessor<boolean>;
 }
 export function Editor(props: EditorProps) {
-  const { handleRun, handleCompile, ref } = props;
+  const { handleRun, handleCompile, ref, shouldDisable } = props;
 
   return (
     <div class="w-full h-screen overflow-hidden relative flex flex-col">
@@ -18,7 +19,7 @@ export function Editor(props: EditorProps) {
           <button onClick={handleCompile}>
             <CompileButton />
           </button>
-          <button onClick={handleRun}>
+          <button onClick={handleRun} disabled={shouldDisable()} class="disabled:opacity-30">
             <RunButton />
           </button>
         </div>
